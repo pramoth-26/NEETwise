@@ -1,6 +1,10 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-
+/**
+ * ProductCard component for displaying product information in a card format
+ * @param {Object} item - Product object containing title, price, thumbnail, etc.
+ * @param {Function} onPress - Callback function when card is pressed
+ */
 export default function ProductCard({ item, onPress }) {
+  // Main render function
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={{ margin: 10, padding: 10, backgroundColor: '#fff' }}>

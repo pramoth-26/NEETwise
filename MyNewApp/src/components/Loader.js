@@ -2,8 +2,10 @@ import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 
 export default function Loader() {
+  // Theme context for styling
   const { theme } = useTheme();
 
+  // Styles for the Loader component
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -18,6 +20,7 @@ export default function Loader() {
     },
   });
 
+  // Main render function
   return (
     <View style={styles.container}>
       {/* Loading Symbol */}

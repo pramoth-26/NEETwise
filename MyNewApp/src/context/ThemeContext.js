@@ -1,6 +1,15 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from 'react';
 import { Appearance } from 'react-native';
 
+// Create Theme Context
+const ThemeContext = createContext(null);
+
+// Light theme configuration
 export const lightTheme = {
   dark: false,
   colors: {
@@ -31,6 +40,7 @@ export const lightTheme = {
   },
 };
 
+// Dark theme configuration
 export const darkTheme = {
   dark: true,
   colors: {
@@ -61,26 +71,47 @@ export const darkTheme = {
   },
 };
 
-const ThemeContext = createContext();
-
+/**
+ * Custom hook to access theme context
+ */
 export const useTheme = () => {
   const context = useContext(ThemeContext);
+
   if (!context) {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
+
   return context;
 };
 
+/**
+ * ThemeProvider component
+ */
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(lightTheme);
 
+  // Set initial theme + listen for system theme changes
   useEffect(() => {
-    const colorScheme = Appearance.getColorScheme();
-    setTheme(colorScheme === 'dark' ? darkTheme : lightTheme);
+    const applyTheme = scheme => {
+      setTheme(scheme === 'dark' ? darkTheme : lightTheme);
+    };
+
+    applyTheme(Appearance.getColorScheme());
+
+    const subscription = Appearance.addChangeListener(
+      ({ colorScheme }) => applyTheme(colorScheme)
+    );
+
+    return () => subscription.remove();
   }, []);
 
+  /**
+   * Manually toggle theme
+   */
   const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === lightTheme ? darkTheme : lightTheme);
+    setTheme(prev =>
+      prev.dark ? lightTheme : darkTheme
+    );
   };
 
   return (
@@ -89,3 +120,5 @@ export const ThemeProvider = ({ children }) => {
     </ThemeContext.Provider>
   );
 };
+
+export default ThemeProvider;

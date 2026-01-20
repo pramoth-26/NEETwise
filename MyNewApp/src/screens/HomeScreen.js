@@ -16,16 +16,28 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 
 const HomeScreen = ({ navigation }) => {
+  // Theme context for light/dark mode
   const { theme, toggleTheme } = useTheme();
+  // Array of products fetched from Firebase
   const [products, setProducts] = useState([]);
+  // Sorting option: 'asc', 'desc', or null
   const [sortBy, setSortBy] = useState(null);
+  // Selected category filter: 'All' or specific category
   const [selectedCategory, setSelectedCategory] = useState('All');
+  // Visibility state for sort/filter modal
   const [modalVisible, setModalVisible] = useState(false);
+  // Last document reference for pagination
   const [lastDoc, setLastDoc] = useState(null);
+  // Loading state for data fetching
   const [loading, setLoading] = useState(false);
+  // Flag to indicate if more products are available for pagination
   const [hasMore, setHasMore] = useState(true);
 
   // Logout function
+  /**
+   * Handles user logout by signing out from Firebase Auth
+   * @async
+   */
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -35,6 +47,10 @@ const HomeScreen = ({ navigation }) => {
   };
 
   // Fetch products
+  /**
+   * Fetches initial set of products from Firebase and handles empty collection
+   * @async
+   */
   const loadProducts = async () => {
     setLoading(true);
     try {
@@ -56,6 +72,10 @@ const HomeScreen = ({ navigation }) => {
   };
 
   // Load more products
+  /**
+   * Loads additional products for pagination with a delay for better UX
+   * @async
+   */
   const loadMoreProducts = async () => {
     if (!hasMore || loading) return;
     setLoading(true);
@@ -75,6 +95,11 @@ const HomeScreen = ({ navigation }) => {
   };
 
   // Render single product
+  /**
+   * Renders a single product item in the FlatList
+   * @param {Object} item - Product object with title, price, thumbnail, etc.
+   * @returns {JSX.Element} Touchable product card
+   */
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
@@ -86,12 +111,12 @@ const HomeScreen = ({ navigation }) => {
     </TouchableOpacity>
   );
 
-  // Load products
+  // Load products on component mount
   useEffect(() => {
     loadProducts();
   }, []);
 
-  // Reload when category changes
+  // Reload products when category filter changes
   useEffect(() => {
     if (selectedCategory !== 'All') {
       loadProducts();
@@ -99,6 +124,10 @@ const HomeScreen = ({ navigation }) => {
   }, [selectedCategory]);
 
   // Add sample data if collection is empty
+  /**
+   * Adds sample product data to Firestore if the products collection is empty
+   * @async
+   */
   const addSampleDataIfEmpty = async () => {
     try {
       const sampleProducts = [
@@ -143,11 +172,17 @@ const HomeScreen = ({ navigation }) => {
   };
 
   // Filtered and sorted products
+  /**
+   * Memoized computation of filtered and sorted products based on current filters
+   * @returns {Array} Filtered and sorted array of products
+   */
   const filteredProducts = useMemo(() => {
     let filtered = products;
+    // Apply category filter
     if (selectedCategory !== 'All') {
       filtered = filtered.filter(item => item.category === selectedCategory);
     }
+    // Apply price sorting
     if (sortBy === 'asc') {
       filtered = [...filtered].sort((a, b) => a.price - b.price);
     } else if (sortBy === 'desc') {
@@ -156,6 +191,7 @@ const HomeScreen = ({ navigation }) => {
     return filtered;
   }, [products, sortBy, selectedCategory]);
 
+  // Styles for the HomeScreen component
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -275,8 +311,10 @@ const HomeScreen = ({ navigation }) => {
     },
   });
 
+  // Main render function
   return (
     <View style={styles.container}>
+      {/* Header section with title and action buttons */}
       <View style={styles.header}>
         <Text style={styles.headerTitle} >Products</Text>
         <View style={styles.headerButtons}>
@@ -291,6 +329,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
+      {/* Product list with infinite scroll */}
       <FlatList
         data={filteredProducts}
         keyExtractor={item => item.docId}
@@ -300,6 +339,7 @@ const HomeScreen = ({ navigation }) => {
         onEndReachedThreshold={0.5}
         ListFooterComponent={loading ? <View style={styles.loadingContainer}><Text style={styles.loadingText}>Loading...</Text></View> : null}
       />
+      {/* Filter modal */}
       <Modal
         animationType="slide"
         transparent={true}

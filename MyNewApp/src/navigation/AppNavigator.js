@@ -8,10 +8,14 @@ import DrawerNavigator from './DrawerNavigator';
 import LoginScreen from '../screens/LoginScreen';
 
 const AppNavigator = () => {
+  // Theme context for navigation styling
   const { theme } = useTheme();
+  // Current authenticated user
   const [user, setUser] = useState(null);
+  // Loading state for auth check
   const [loading, setLoading] = useState(true);
 
+  // Listen for authentication state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
@@ -21,10 +25,12 @@ const AppNavigator = () => {
     return unsubscribe;
   }, []);
 
+  // Show nothing while checking auth state
   if (loading) {
     return null; // Or a loading screen
   }
 
+  // Main render function
   return (
     <>
       <StatusBar style={theme.dark ? 'light' : 'dark'} />

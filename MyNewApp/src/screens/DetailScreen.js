@@ -5,11 +5,14 @@ import { useTheme } from '../context/ThemeContext';
 import Loader from '../components/Loader';
 
 export default function DetailScreen({ route, navigation }) {
+  // Theme context for styling
   const { theme, toggleTheme } = useTheme();
+  // Product data passed from navigation
   const { product } = route.params;
-
+  // Loading state for initial render delay
   const [loading, setLoading] = useState(true);
 
+  // Simulate loading delay for better UX
   useEffect(() => {
     // Wait 1 second after navigation
     const timer = setTimeout(() => {
@@ -19,6 +22,7 @@ export default function DetailScreen({ route, navigation }) {
     return () => clearTimeout(timer);
   }, []);
 
+  // Styles for the DetailScreen component
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -62,10 +66,12 @@ export default function DetailScreen({ route, navigation }) {
     },
   });
 
+  // Show loader while simulating loading
   if (loading) {
     return <Loader />;
   }
 
+  // Main render function
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
