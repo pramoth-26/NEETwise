@@ -5,7 +5,8 @@ import { useTheme } from '../context/ThemeContext';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
 import DrawerNavigator from './DrawerNavigator';
-import LoginScreen from '../screens/LoginScreen';
+import AuthNavigator from './AuthNavigator';
+
 
 const AppNavigator = () => {
   // Theme context for navigation styling
@@ -35,7 +36,7 @@ const AppNavigator = () => {
     <>
       <StatusBar style={theme.dark ? 'light' : 'dark'} />
       <NavigationContainer theme={theme}>
-        {user ? <DrawerNavigator /> : <LoginScreen />}
+        {user ? <DrawerNavigator /> : <AuthNavigator />}
       </NavigationContainer>
     </>
   );

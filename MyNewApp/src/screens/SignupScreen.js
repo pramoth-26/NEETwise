@@ -7,37 +7,36 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
 
-const LoginScreen = ({ navigation }) => {
-  // Theme context for dynamic styling
+const SignupScreen = ({ navigation }) => {
   const { theme } = useTheme();
 
-  // Form state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  /**
-   * Handles user login using Firebase Authentication
-   */
-  const handleLogin = async () => {
-    // Basic input validation
-    if (!email || !password) {
+  const handleSignup = async () => {
+    if (!email || !password || !confirmPassword) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
 
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match');
+      return;
+    }
+
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
+      Alert.alert('Success', 'Account created successfully');
     } catch (error) {
-      // Generic error message to avoid leaking auth details
-      Alert.alert('Error', 'Invalid email or password');
+      Alert.alert('Error', error.message);
     }
   };
 
-  // Main render
   return (
     <View
       style={[
@@ -46,32 +45,26 @@ const LoginScreen = ({ navigation }) => {
       ]}
     >
       <Text style={[styles.title, { color: theme.colors.text }]}>
-        Login
+        Sign Up
       </Text>
 
       <TextInput
         style={[
           styles.input,
-          {
-            backgroundColor: theme.colors.card,
-            color: theme.colors.text,
-          },
+          { backgroundColor: theme.colors.card, color: theme.colors.text },
         ]}
         placeholder="Email"
         placeholderTextColor={theme.colors.text}
         value={email}
         onChangeText={setEmail}
-        keyboardType="email-address"
         autoCapitalize="none"
+        keyboardType="email-address"
       />
 
       <TextInput
         style={[
           styles.input,
-          {
-            backgroundColor: theme.colors.card,
-            color: theme.colors.text,
-          },
+          { backgroundColor: theme.colors.card, color: theme.colors.text },
         ]}
         placeholder="Password"
         placeholderTextColor={theme.colors.text}
@@ -80,28 +73,39 @@ const LoginScreen = ({ navigation }) => {
         secureTextEntry
       />
 
+      <TextInput
+        style={[
+          styles.input,
+          { backgroundColor: theme.colors.card, color: theme.colors.text },
+        ]}
+        placeholder="Confirm Password"
+        placeholderTextColor={theme.colors.text}
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+        secureTextEntry
+      />
+
       <TouchableOpacity
         style={[
           styles.button,
           { backgroundColor: theme.colors.primary },
         ]}
-        onPress={handleLogin}
+        onPress={handleSignup}
       >
         <Text style={[styles.buttonText, { color: theme.colors.text }]}>
-          Login
+          Sign Up
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-  <Text style={{ color: theme.colors.primary, textAlign: 'center' }}>
-    Don't have an account? Sign Up
-  </Text>
-</TouchableOpacity>
 
+      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <Text style={{ color: theme.colors.primary, textAlign: 'center' }}>
+          Already have an account? Login
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-// Styles for the LoginScreen component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -133,4 +137,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default SignupScreen;
