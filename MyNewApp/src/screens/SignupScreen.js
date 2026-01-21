@@ -9,10 +9,14 @@ import {
 } from 'react-native';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme, useStyles } from '../context/ThemeContext';
+import { designSystem } from '../styles/themeUtils';
+
+const { spacing } = designSystem;
 
 const SignupScreen = ({ navigation }) => {
   const { theme } = useTheme();
+  const globalStyles = useStyles();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -38,21 +42,11 @@ const SignupScreen = ({ navigation }) => {
   };
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: theme.colors.background },
-      ]}
-    >
-      <Text style={[styles.title, { color: theme.colors.text }]}>
-        Sign Up
-      </Text>
+    <View style={globalStyles.centerContainer}>
+      <Text style={globalStyles.heading1}>Sign Up</Text>
 
       <TextInput
-        style={[
-          styles.input,
-          { backgroundColor: theme.colors.card, color: theme.colors.text },
-        ]}
+        style={[globalStyles.input, { marginBottom: spacing.md, marginHorizontal: spacing.lg, width: '90%' }]}
         placeholder="Email"
         placeholderTextColor={theme.colors.text}
         value={email}
@@ -62,10 +56,7 @@ const SignupScreen = ({ navigation }) => {
       />
 
       <TextInput
-        style={[
-          styles.input,
-          { backgroundColor: theme.colors.card, color: theme.colors.text },
-        ]}
+        style={[globalStyles.input, { marginBottom: spacing.md, marginHorizontal: spacing.lg, width: '90%' }]}
         placeholder="Password"
         placeholderTextColor={theme.colors.text}
         value={password}
@@ -74,10 +65,7 @@ const SignupScreen = ({ navigation }) => {
       />
 
       <TextInput
-        style={[
-          styles.input,
-          { backgroundColor: theme.colors.card, color: theme.colors.text },
-        ]}
+        style={[globalStyles.input, { marginBottom: spacing.md, marginHorizontal: spacing.lg, width: '90%' }]}
         placeholder="Confirm Password"
         placeholderTextColor={theme.colors.text}
         value={confirmPassword}
@@ -86,55 +74,17 @@ const SignupScreen = ({ navigation }) => {
       />
 
       <TouchableOpacity
-        style={[
-          styles.button,
-          { backgroundColor: theme.colors.primary },
-        ]}
+        style={[globalStyles.primaryButton, { width: '90%', marginHorizontal: spacing.lg, marginBottom: spacing.lg }]}
         onPress={handleSignup}
       >
-        <Text style={[styles.buttonText, { color: theme.colors.text }]}>
-          Sign Up
-        </Text>
+        <Text style={globalStyles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={{ color: theme.colors.primary, textAlign: 'center' }}>
-          Already have an account? Login
-        </Text>
+        <Text style={globalStyles.link}>Already have an account? Login</Text>
       </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 15,
-  },
-  button: {
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
 
 export default SignupScreen;

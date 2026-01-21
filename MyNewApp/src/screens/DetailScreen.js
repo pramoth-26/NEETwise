@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme, useStyles } from '../context/ThemeContext';
 import Loader from '../components/Loader';
 
 export default function DetailScreen({ route, navigation }) {
   // Theme context for styling
   const { theme, toggleTheme } = useTheme();
+  const globalStyles = useStyles();
   // Product data passed from navigation
   const { product } = route.params;
   // Loading state for initial render delay
@@ -23,48 +24,7 @@ export default function DetailScreen({ route, navigation }) {
   }, []);
 
   // Styles for the DetailScreen component
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.colors.background,
-      padding: 10,
-    },
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 10,
-    },
-    headerTitle: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      color: theme.colors.text,
-    },
-    toggleButton: {
-      padding: 10,
-      backgroundColor: theme.colors.primary,
-      borderRadius: 5,
-    },
-    image: {
-      height: 250,
-      marginBottom: 10,
-    },
-    title: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      color: theme.colors.text,
-      marginBottom: 5,
-    },
-    price: {
-      fontSize: 16,
-      color: 'green',
-      marginBottom: 10,
-    },
-    description: {
-      fontSize: 14,
-      color: theme.colors.text,
-    },
-  });
+  // Using global styles from useStyles
 
   // Show loader while simulating loading
   if (loading) {
@@ -73,22 +33,24 @@ export default function DetailScreen({ route, navigation }) {
 
   // Main render function
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Product Detail</Text>
-        <TouchableOpacity style={styles.toggleButton} onPress={toggleTheme}>
+    <ScrollView style={globalStyles.container}>
+      <View style={globalStyles.header}>
+        <Text style={globalStyles.heading2}>Product Detail</Text>
+        <TouchableOpacity style={globalStyles.primaryButton} onPress={toggleTheme}>
           <Ionicons name={theme.dark ? 'sunny' : 'moon'} size={24} color="#FFFFFF" />
         </TouchableOpacity>
       </View>
       <Image
         source={{ uri: product.thumbnail }}
-        style={styles.image}
+        style={globalStyles.productImage}
       />
-      <Text style={styles.title}>
-        {product.title}
-      </Text>
-      <Text style={styles.price}>₹ {product.price}</Text>
-      <Text style={styles.description}>{product.description}</Text>
+      <View style={{ padding: 16 }}>
+        <Text style={globalStyles.heading1}>
+          {product.title}
+        </Text>
+        <Text style={globalStyles.productPrice}>₹ {product.price}</Text>
+        <Text style={globalStyles.body}>{product.description}</Text>
+      </View>
     </ScrollView>
   );
 }

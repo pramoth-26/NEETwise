@@ -3,8 +3,10 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useMemo,
 } from 'react';
 import { Appearance } from 'react-native';
+import { createGlobalStyles } from '../styles/globalStyles';
 
 // Create Theme Context
 const ThemeContext = createContext(null);
@@ -85,10 +87,21 @@ export const useTheme = () => {
 };
 
 /**
+ * Custom hook to access global styles
+ */
+export const useStyles = () => {
+  const { styles } = useTheme();
+  return styles;
+};
+
+/**
  * ThemeProvider component
  */
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(lightTheme);
+
+  // Memoize the global styles to avoid unnecessary recalculations
+  const styles = useMemo(() => createGlobalStyles(theme), [theme]);
 
   // Set initial theme + listen for system theme changes
   useEffect(() => {
@@ -115,7 +128,7 @@ export const ThemeProvider = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, styles, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

@@ -4,21 +4,25 @@ import {
   View,
   Text,
   FlatList,
-  StyleSheet,
   Image,
   TouchableOpacity,
   Modal,
+  StyleSheet,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme, useStyles } from '../context/ThemeContext';
 import { fetchProducts } from '../api/productsApi';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
+import { designSystem } from '../styles/themeUtils';
+
+const { spacing } = designSystem;
 
 const HomeScreen = ({ navigation }) => {
   // Theme context for light/dark mode
   const { theme, toggleTheme } = useTheme();
+  const globalStyles = useStyles();
   // Array of products fetched from Firebase
   const [products, setProducts] = useState([]);
   // Sorting option: 'asc', 'desc', or null
@@ -109,12 +113,14 @@ const HomeScreen = ({ navigation }) => {
    */
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      style={styles.card}
+      style={globalStyles.productCard}
       onPress={() => navigation.navigate('Detail', { product: item })}
     >
-      <Image source={{ uri: item.thumbnail }} style={styles.image} />
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.price}>₹ {item.price}</Text>
+      <Image source={{ uri: item.thumbnail }} style={globalStyles.productImage} />
+      <View style={globalStyles.productInfo}>
+        <Text style={globalStyles.productTitle}>{item.title}</Text>
+        <Text style={globalStyles.productPrice}>₹ {item.price}</Text>
+      </View>
     </TouchableOpacity>
   );
 
@@ -199,139 +205,48 @@ const HomeScreen = ({ navigation }) => {
   }, [products, sortBy, selectedCategory]);
 
   // Styles for the HomeScreen component
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.colors.background,
-      padding: 10,
-    },
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 10,
-    }, 
-    headerTitle: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: theme.colors.text,
-    },
-    headerButtons: {
-      flexDirection: 'row',
-    },
-    iconButton: {
-      padding: 10,
-      marginLeft: 10,
-    },
-    toggleButton: {
-      padding: 10,
-      backgroundColor: theme.colors.primary,
-      borderRadius: 5,
-    },
+  const localStyles = StyleSheet.create({
     filterContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: 10,
+      marginBottom: spacing.md,
+      marginHorizontal: spacing.lg,
     },
     filterSection: {
       flex: 1,
-      marginHorizontal: 5,
+      marginHorizontal: spacing.sm,
     },
     filterLabel: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      color: theme.colors.text,
-      marginTop: 10,
-      marginBottom: 5,
+      ...globalStyles.inputLabel,
+      marginTop: spacing.md,
+      marginBottom: spacing.sm,
     },
     checkboxContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: 10,
+      marginBottom: spacing.md,
     },
     checkboxText: {
-      marginLeft: 10,
+      marginLeft: spacing.md,
       color: theme.colors.text,
       fontSize: 14,
-    },
-    card: {
-      backgroundColor: theme.colors.card,
-      borderRadius: 10,
-      padding: 10,
-      marginBottom: 15,
-      elevation: 2,
-    },
-    image: {
-      width: '100%',
-      height: 180,
-      borderRadius: 10,
-    },
-    title: {
-      fontSize: 16,
-      fontWeight: '600',
-      marginTop: 8,
-      color: theme.colors.text,
-    },
-    price: {
-      fontSize: 14,
-      color: theme.colors.primary,
-      marginTop: 4,
-    },
-    modalOverlay: {
-      flex: 1,
-      backgroundColor: 'rgba(0,0,0,0.5)',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    modalContent: {
-      backgroundColor: theme.colors.background,
-      borderRadius: 10,
-      padding: 20,
-      width: '90%',
-      maxHeight: '80%',
-    },
-    modalTitle: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      color: theme.colors.text,
-      marginBottom: 20,
-      textAlign: 'center',
-    },
-    closeButton: {
-      backgroundColor: theme.colors.primary,
-      padding: 10,
-      borderRadius: 5,
-      alignItems: 'center',
-      marginTop: 20,
-    },
-    closeButtonText: {
-      color: theme.colors.text,
-      fontWeight: 'bold',
-    },
-    loadingContainer: {
-      padding: 20,
-      alignItems: 'center',
-    },
-    loadingText: {
-      color: theme.colors.text,
-      fontSize: 16,
     },
   });
 
   // Main render function
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
       {/* Header section with title and action buttons */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle} >Products</Text>
-        <View style={styles.headerButtons}>
-          <TouchableOpacity style={styles.iconButton} onPress={() => setModalVisible(true)}>
+      <View style={globalStyles.header}>
+        <Text style={globalStyles.heading2}>Products</Text>
+        <View style={globalStyles.row}>
+          <TouchableOpacity style={{ padding: spacing.md }} onPress={() => setModalVisible(true)}>
             <Ionicons name="filter" size={24} color={theme.colors.text} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton} onPress={toggleTheme}>
+          <TouchableOpacity style={{ padding: spacing.md }} onPress={toggleTheme}>
             <Ionicons name={theme.dark ? 'sunny' : 'moon'} size={24} color={theme.colors.text} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton} onPress={handleLogout}>
+          <TouchableOpacity style={{ padding: spacing.md }} onPress={handleLogout}>
             <Ionicons name="log-out" size={24} color={theme.colors.text} />
           </TouchableOpacity>
         </View>
@@ -344,7 +259,8 @@ const HomeScreen = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         onEndReached={loadMoreProducts}
         onEndReachedThreshold={0.5}
-        ListFooterComponent={loading ? <View style={styles.loadingContainer}><Text style={styles.loadingText}>Loading...</Text></View> : null}
+        contentContainerStyle={{ paddingHorizontal: spacing.md }}
+        ListFooterComponent={loading ? <View style={globalStyles.loaderContainer}><Text style={globalStyles.body}>Loading...</Text></View> : null}
       />
       {/* Filter modal */}
       <Modal
@@ -353,29 +269,29 @@ const HomeScreen = ({ navigation }) => {
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Filters</Text>
-            <View style={styles.filterContainer}>
-              <View style={styles.filterSection}>
-                <Text style={styles.filterLabel}>Category:</Text>
+        <View style={globalStyles.modal}>
+          <View style={globalStyles.modalContent}>
+            <Text style={globalStyles.heading2}>Filters</Text>
+            <View style={localStyles.filterContainer}>
+              <View style={localStyles.filterSection}>
+                <Text style={localStyles.filterLabel}>Category:</Text>
                 {['All', 'Smartphones', 'laptops', 'mobile accessories', 'home appliances'].map(category => (
                   <TouchableOpacity
                     key={category}
                     onPress={() => setSelectedCategory(category)}
-                    style={styles.checkboxContainer}
+                    style={localStyles.checkboxContainer}
                   >
                     <Ionicons
                       name={selectedCategory === category ? 'checkmark-circle' : 'radio-button-off'}
                       size={20}
                       color={theme.colors.primary}
                     />
-                    <Text style={styles.checkboxText}>{category}</Text>
+                    <Text style={localStyles.checkboxText}>{category}</Text>
                   </TouchableOpacity>
                 ))}
               </View>
-              <View style={styles.filterSection}>
-                <Text style={styles.filterLabel}>Sort by Price:</Text>
+              <View style={localStyles.filterSection}>
+                <Text style={localStyles.filterLabel}>Sort by Price:</Text>
                 {[
                   { label: 'None', value: null },
                   { label: 'Low to High', value: 'asc' },
@@ -384,20 +300,20 @@ const HomeScreen = ({ navigation }) => {
                   <TouchableOpacity
                     key={item.value}
                     onPress={() => setSortBy(item.value)}
-                    style={styles.checkboxContainer}
+                    style={localStyles.checkboxContainer}
                   >
                     <Ionicons
                       name={sortBy === item.value ? 'checkmark-circle' : 'radio-button-off'}
                       size={20}
                       color={theme.colors.primary}
                     />
-                    <Text style={styles.checkboxText}>{item.label}</Text>
+                    <Text style={localStyles.checkboxText}>{item.label}</Text>
                   </TouchableOpacity>
                 ))}
               </View>
             </View>
-            <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
-              <Text style={styles.closeButtonText}>Close</Text>
+            <TouchableOpacity style={globalStyles.primaryButton} onPress={() => setModalVisible(false)}>
+              <Text style={globalStyles.buttonText}>Close</Text>
             </TouchableOpacity>
           </View>
         </View>
