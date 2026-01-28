@@ -34,12 +34,12 @@ export default function DetailScreen({ route, navigation }) {
   // Main render function
   return (
     <ScrollView style={globalStyles.container}>
-      <View style={globalStyles.header}>
+      {/* <View style={globalStyles.header}>
         <Text style={globalStyles.heading2}>Product Detail</Text>
         <TouchableOpacity style={globalStyles.primaryButton} onPress={toggleTheme}>
           <Ionicons name={theme.dark ? 'sunny' : 'moon'} size={24} color="#FFFFFF" />
         </TouchableOpacity>
-      </View>
+      </View> */}
       <Image
         source={{ uri: product.thumbnail }}
         style={globalStyles.productImage}

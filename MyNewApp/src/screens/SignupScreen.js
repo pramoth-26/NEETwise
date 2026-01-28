@@ -37,7 +37,7 @@ const SignupScreen = ({ navigation }) => {
 
   return (
     <LinearGradient
-      colors={['#0E1A24', '#1A2633']}
+      colors={['#36475a', '#36475a']}
       style={styles.container}
     >
       
@@ -113,7 +113,7 @@ export default SignupScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0E1A24',
+    backgroundColor: '#36475a',
     justifyContent: 'center',
     padding: 16,
   },

@@ -14,8 +14,20 @@ const firebaseConfig = {
 };
 
 // Google Sign-In Configuration
+// NOTE: For native platforms (iOS/Android), you need to:
+// 1. Create OAuth credentials for iOS and Android in Google Cloud Console
+// 2. For Android: Get your SHA-1 fingerprint from: eas build --platform android --auto-commit
+//    Then add the fingerprint in Google Cloud Console OAuth settings
+// 3. For iOS: Add bundleIdentifier from app.json to Google Cloud Console OAuth settings
+
+// Web OAuth Client ID
 export const GOOGLE_SIGN_IN_KEY = '196881963121-oismb6gnhsmtdquvj0dsq3djomlf17l7.apps.googleusercontent.com';
 
+// iOS OAuth Client ID - Replace with your actual iOS client ID from Google Cloud Console
+export const GOOGLE_SIGN_IN_IOS_KEY = '196881963121-oismb6gnhsmtdquvj0dsq3djomlf17l7.apps.googleusercontent.com';
+
+// Android OAuth Client ID - Replace with your actual Android client ID from Google Cloud Console
+export const GOOGLE_SIGN_IN_ANDROID_KEY = '196881963121-oismb6gnhsmtdquvj0dsq3djomlf17l7.apps.googleusercontent.com';
 
 // Initialize Firebase app
 const app = initializeApp(firebaseConfig);

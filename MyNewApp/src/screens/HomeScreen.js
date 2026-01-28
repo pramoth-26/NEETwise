@@ -284,16 +284,22 @@ const HomeScreen = ({ navigation }) => {
       )}
       {/* Header section with title and action buttons */}
       <View style={globalStyles.header}>
-        <Text style={globalStyles.heading2}>Products</Text>
+        <Text style={globalStyles.heading2}></Text>
         <View style={globalStyles.row}>
-          <TouchableOpacity style={{ padding: spacing.md }} onPress={() => setModalVisible(true)}>
-            <Ionicons name="filter" size={24} color={theme.colors.text} />
-          </TouchableOpacity>
-          <TouchableOpacity style={{ padding: spacing.md }} onPress={toggleTheme}>
-            <Ionicons name={theme.dark ? 'sunny' : 'moon'} size={24} color={theme.colors.text} />
-          </TouchableOpacity>
-          <TouchableOpacity style={{ padding: spacing.md }} onPress={handleLogout}>
-            <Ionicons name="log-out" size={24} color={theme.colors.text} />
+          <TouchableOpacity 
+            style={{
+              paddingHorizontal: spacing.lg,
+              paddingVertical: spacing.md,
+              backgroundColor: '#fe6e32',
+              borderRadius: 20,
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'row',
+            }}
+            onPress={() => setModalVisible(true)}
+          >
+            <Ionicons name="filter" size={20} color="white" style={{ marginRight: 8 }} />
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Filters</Text>
           </TouchableOpacity>
         </View>
       </View>

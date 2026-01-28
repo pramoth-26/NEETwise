@@ -47,8 +47,8 @@ export const darkTheme = {
   dark: true,
   colors: {
     primary: '#0A84FF',
-    background: '#000000',
-    card: '#1C1C1E',
+    background: '#2d3e50',
+    card: '#34495e',
     text: '#FFFFFF',
     border: '#38383A',
     notification: '#FF453A',
