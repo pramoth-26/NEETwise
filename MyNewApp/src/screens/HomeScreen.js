@@ -395,7 +395,7 @@ const HomeScreen = ({ navigation }) => {
               paddingHorizontal: spacing.lg,
               paddingVertical: spacing.md,
               backgroundColor: '#fe6e32',
-              borderRadius: 20,
+              borderRadius: 10,
               justifyContent: 'center',
               alignItems: 'center',
               flexDirection: 'row',
@@ -469,8 +469,8 @@ const HomeScreen = ({ navigation }) => {
           style={localStyles.footerTab}
           onPress={() => {}}
         >
-          <Ionicons name="home" size={24} color={theme.colors.primary} />
-          <Text style={[localStyles.footerLabel, { color: theme.colors.primary }]}>Home</Text>
+          <Ionicons name="home" size={24} color='#f36e32' />
+          <Text style={[localStyles.footerLabel, { color: "#f36e32"}]}>Home</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={localStyles.footerTab}

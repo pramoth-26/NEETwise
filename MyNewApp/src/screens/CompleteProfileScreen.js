@@ -244,13 +244,14 @@ const CompleteProfileScreen = ({ navigation }) => {
     },
     progressBar: {
       height: '100%',
-      backgroundColor: theme.colors.primary,
+      backgroundColor: '#f36e32',
       borderRadius: 2,
     },
     stepCounter: {
       fontSize: 12,
       fontWeight: '500',
-      color: theme.dark ? '#7A8B9B' : '#999',
+      color: theme.dark ? '#a2b2c1' : '#838080',
+      textAlign: "center",
       marginBottom: 24,
     },
     label: {
@@ -329,14 +330,14 @@ const CompleteProfileScreen = ({ navigation }) => {
       textAlign: 'center',
     },
     switchLabelActive: {
-      color: theme.colors.primary,
+      color: '#f36e32',
       fontWeight: '600',
     },
     profileInfoBox: {
       backgroundColor: theme.dark ? '#2A3F52' : '#FFF',
       borderRadius: 12,
       borderWidth: 1,
-      borderColor: theme.colors.primary,
+      borderColor: '#f36e32',
       padding: 16,
       marginBottom: 24,
     },
@@ -367,14 +368,14 @@ const CompleteProfileScreen = ({ navigation }) => {
       borderRadius: 4,
       borderWidth: 2,
       borderColor: theme.dark ? '#3A4B5C' : '#E0E6ED',
-      backgroundColor: theme.dark ? '#2A3F52' : '#FFF',
+      backgroundColor: theme.dark ? '#FFF' : '#FFF',
       justifyContent: 'center',
       alignItems: 'center',
       marginRight: 12,
     },
     checkboxChecked: {
-      backgroundColor: theme.colors.primary,
-      borderColor: theme.colors.primary,
+      backgroundColor: '#f36e32',
+      borderColor: '#f36e32',
     },
     checkboxLabel: {
       fontSize: 13,
@@ -395,14 +396,14 @@ const CompleteProfileScreen = ({ navigation }) => {
     backText: {
       fontSize: 14,
       fontWeight: '500',
-      color: theme.colors.primary,
+      color: theme.dark ? '#d5dde4' : '#52555a',
       textAlign: 'center',
       paddingVertical: 12,
     },
     skipText: {
       fontSize: 14,
       fontWeight: '500',
-      color: theme.colors.primary,
+      color: theme.dark ? '#d5dde4' : '#52555a',
       textAlign: 'center',
       paddingVertical: 12,
     },
@@ -540,17 +541,17 @@ const CompleteProfileScreen = ({ navigation }) => {
               <View style={styles.formGroup}>
                 <Text style={themedStyles.label}>Are you a NEET Repeater?</Text>
                 <View style={themedStyles.switchRowContainer}>
-                  <Text style={[styles.switchLabel, !isNEETRepeater && styles.switchLabelActive, { color: !isNEETRepeater ? theme.colors.primary : theme.dark ? '#7A8B9B' : '#999' }]}>
+                  <Text style={[styles.switchLabel, !isNEETRepeater && styles.switchLabelActive, { color: !isNEETRepeater ? '#f36e32' : theme.dark ? '#7A8B9B' : '#999' }]}>
                     No
                   </Text>
                   <Switch
                     value={isNEETRepeater}
                     onValueChange={setIsNEETRepeater}
-                    trackColor={{ false: theme.dark ? '#3A4B5C' : '#E0E6ED', true: theme.colors.primary }}
+                    trackColor={{ false: theme.dark ? '#3A4B5C' : '#E0E6ED', true: '#f36e32' }}
                     thumbColor={isNEETRepeater ? '#FFF' : theme.dark ? '#A8B5C2' : '#CCC'}
                     style={styles.switch}
                   />
-                  <Text style={[styles.switchLabel, isNEETRepeater && styles.switchLabelActive, { color: isNEETRepeater ? theme.colors.primary : theme.dark ? '#7A8B9B' : '#999' }]}>
+                  <Text style={[styles.switchLabel, isNEETRepeater && styles.switchLabelActive, { color: isNEETRepeater ? '#f36e32' : theme.dark ? '#7A8B9B' : '#999' }]}>
                     Yes
                   </Text>
                 </View>
@@ -657,7 +658,7 @@ const CompleteProfileScreen = ({ navigation }) => {
               {/* Your Profile Info Box */}
               <View style={themedStyles.profileInfoBox}>
                 <View style={themedStyles.profileInfoHeader}>
-                  <Ionicons name="person-circle" size={24} color={theme.colors.primary} />
+                  <Ionicons name="person-circle" size={24} color={'#f36e32'} />
                   <Text style={themedStyles.profileInfoTitle}>Your Profile</Text>
                 </View>
                 <View style={styles.profileInfoContent}>

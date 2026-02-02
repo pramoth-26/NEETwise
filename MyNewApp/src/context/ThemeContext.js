@@ -15,12 +15,12 @@ const ThemeContext = createContext(null);
 export const lightTheme = {
   dark: false,
   colors: {
-    primary: '#007AFF',
-    background: '#FFFFFF',
-    card: '#F2F2F7',
+    primary: '#f36e32',
+    background: '#efeded',
+    card: '#ffffff',
     text: '#000000',
     border: '#C6C6C8',
-    notification: '#FF3B30',
+    notification: '#f36e32',
   },
   fonts: {
     regular: {
@@ -46,12 +46,12 @@ export const lightTheme = {
 export const darkTheme = {
   dark: true,
   colors: {
-    primary: '#0A84FF',
+    primary: '#f36e32',
     background: '#2d3e50',
     card: '#34495e',
     text: '#FFFFFF',
     border: '#38383A',
-    notification: '#FF453A',
+    notification: '#f36e32',
   },
   fonts: {
     regular: {

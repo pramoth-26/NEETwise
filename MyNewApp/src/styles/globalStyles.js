@@ -398,7 +398,7 @@ export const createGlobalStyles = (theme) => {
     productPrice: {
       fontSize: fontSizes.lg,
       fontWeight: fontWeights.bold,
-      color: theme.colors.primary,
+      color: theme.colors.text,
       marginBottom: spacing.sm,
     },
 
