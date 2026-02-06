@@ -66,7 +66,7 @@ const SplashScreen = ({ navigation }) => {
 
     return (
         <LinearGradient
-            colors={[theme.colors.background, theme.dark ? '#1f2a36' : '#fdfdfd']}
+            colors={[theme.colors.background, theme.dark ? '#2d3e50' : '#fdfdfd']}
             style={styles.container}
         >
             <ScrollView

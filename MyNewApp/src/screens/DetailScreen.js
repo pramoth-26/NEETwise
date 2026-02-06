@@ -48,6 +48,7 @@ export default function DetailScreen({ route, navigation }) {
       marginTop: 8,
     },
     typeTagText: {
+      
       fontSize: 12,
       fontWeight: '600',
       color: '#FFF',
@@ -115,6 +116,7 @@ export default function DetailScreen({ route, navigation }) {
             {college.type}
           </Text>
         </View>
+        
       </View>
 
       {/* Course Information */}

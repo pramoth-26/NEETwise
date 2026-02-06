@@ -9,7 +9,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Picker } from '@react-native-picker/picker';
+// Picker removed; using chips for type filter
 import { useFocusEffect } from '@react-navigation/native';
 import { useTheme, useStyles } from '../context/ThemeContext';
 import { fetchColleges, subscribeToNewColleges, fetchUserProfile, filterCollegesByProfile } from '../api/collegesApi';
@@ -33,6 +33,8 @@ const HomeScreen = ({ navigation }) => {
   const [selectedType, setSelectedType] = useState('All');
   // Visibility state for filter modal
   const [modalVisible, setModalVisible] = useState(false);
+  // Show inline filters under the header when true
+  const [showInlineFilters, setShowInlineFilters] = useState(false);
   // Last document reference for pagination
   const [lastDoc, setLastDoc] = useState(null);
   // Loading state for data fetching
@@ -166,10 +168,12 @@ const HomeScreen = ({ navigation }) => {
     }
 
     return (
+      
       <TouchableOpacity
         style={[globalStyles.collegeCard, localStyles.card]}
         onPress={() => navigation.navigate('Detail', { college: item })}
       >
+        
         <View style={localStyles.cardHeader}>
           <View style={localStyles.cardHeaderLeft}>
             <View style={localStyles.iconCircle}>
@@ -384,7 +388,7 @@ const HomeScreen = ({ navigation }) => {
     card: {
       padding: 14,
       borderRadius: 12,
-      backgroundColor: theme.dark ? '#14202a' : '#FFFFFF',
+      backgroundColor: theme.dark ? '#34495e' : '#FFFFFF',
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 0.06,
@@ -472,6 +476,51 @@ const HomeScreen = ({ navigation }) => {
       fontSize: 16,
       fontWeight: '600',
     },
+    headerTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: theme.colors.text,
+      marginBottom: spacing.sm,
+    },
+    typeChip: {
+      paddingHorizontal: 14,
+      paddingVertical: 8,
+      borderRadius: 20,
+      backgroundColor: theme.dark ? '#1E2D3A' : '#FFF',
+      borderWidth: 1,
+      borderColor: theme.dark ? '#3A4B5C' : '#EDEDED',
+    },
+    typeChipActive: {
+      backgroundColor: '#fe6e32',
+      borderColor: '#fe6e32',
+    },
+    typeChipText: {
+      fontSize: 13,
+      fontWeight: '600',
+      color: theme.colors.text,
+    },
+    typeChipTextActive: {
+      color: '#fff',
+    },
+    chipsRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      gap: 8,
+    },
+    chip: {
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      borderRadius: 20,
+      backgroundColor: theme.dark ? '#1E2D3A' : '#FFF',
+      borderWidth: 1,
+      borderColor: theme.dark ? '#3A4B5C' : '#EDEDED',
+    },
+    chipText: {
+      fontSize: 13,
+      fontWeight: '600',
+      color: theme.colors.text,
+    },
   });
 
   // Main render function
@@ -494,6 +543,27 @@ const HomeScreen = ({ navigation }) => {
       <View style={globalStyles.header}>
         <Text style={globalStyles.heading2}></Text>
         <View style={globalStyles.row}>
+          {showInlineFilters && (
+        <View style={{ paddingHorizontal: spacing.md, paddingVertical: spacing.sm }}>
+          <View style={{ flexDirection: 'row', gap: 8 }}>
+            {['All', 'GOVT', 'PRIVATE'].map(type => (
+              <TouchableOpacity
+                key={type}
+                onPress={() => {
+                  setSelectedType(type);
+                  setShowInlineFilters(false);
+                }}
+                style={[
+                  localStyles.typeChip,
+                  selectedType === type && localStyles.typeChipActive,
+                ]}
+              >
+                <Text style={[localStyles.typeChipText, selectedType === type && localStyles.typeChipTextActive]}>{type}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      )}
           <TouchableOpacity 
             style={{
               paddingHorizontal: spacing.lg,
@@ -504,14 +574,23 @@ const HomeScreen = ({ navigation }) => {
               alignItems: 'center',
               flexDirection: 'row',
             }}
-            onPress={() => setModalVisible(true)}
+            onPress={() => setShowInlineFilters(prev => !prev)}
           >
             <Ionicons name="filter" size={20} color="white" style={{ marginRight: 8 }} />
             <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Filters</Text>
+            
           </TouchableOpacity>
         </View>
+        
       </View>
+      {/* Inline Filters panel (shown when Filters button clicked) */}
+      
       {/* Product list with infinite scroll */}
+
+      <View style={{ paddingHorizontal: spacing.md, paddingTop: spacing.md }}>
+        <Text style={localStyles.headerTitle}>Your Choice of Colleges</Text>
+      </View>
+
       <FlatList
         data={colleges}
         keyExtractor={item => item.docId}
@@ -578,14 +657,14 @@ const HomeScreen = ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={localStyles.footerTab}
-          onPress={() => navigation.navigate('Search') || console.log('Search')}
+          onPress={() => navigation.navigate('Home') || console.log('Search')}
         >
           <Ionicons name="search" size={24} color={theme.dark ? '#A8B5C2' : '#999'} />
           <Text style={[localStyles.footerLabel, { color: theme.dark ? '#A8B5C2' : '#999' }]}>Search</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={localStyles.footerTab}
-          onPress={() => navigation.navigate('Saved') || console.log('Saved')}
+          onPress={() => navigation.navigate('Home') || console.log('Saved')}
         >
           <Ionicons name="bookmark" size={24} color={theme.dark ? '#A8B5C2' : '#999'} />
           <Text style={[localStyles.footerLabel, { color: theme.dark ? '#A8B5C2' : '#999' }]}>Saved</Text>
