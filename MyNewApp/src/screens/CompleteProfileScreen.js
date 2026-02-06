@@ -916,6 +916,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   scoreInput: {
+    width: 100,
     flex: 1,
   },
   toText: {
